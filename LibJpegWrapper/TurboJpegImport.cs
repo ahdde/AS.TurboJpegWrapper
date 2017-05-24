@@ -29,23 +29,6 @@ namespace TurboJpegWrapper
 #if !NETSTANDARD1_3
         public static void Load()
         {
-            Load(AppDomain.CurrentDomain.SetupInformation.ApplicationBase);
-        }
-#endif
-
-        public static void Load(string directory)
-        {
-#if !NETSTANDARD1_3
-            if (directory == null)
-            {
-                throw new ArgumentNullException(nameof(directory));
-            }
-
-            if (!Directory.Exists(directory))
-            {
-                throw new ArgumentOutOfRangeException(nameof(directory), $"The directory '{directory}' does not exist.");
-            }
-
             // When the library is first called, call LoadLibrary with the full path to the
             // path of the various libaries, to make sure they are loaded from the exact
             // path we specify.
@@ -53,29 +36,8 @@ namespace TurboJpegWrapper
             // Any load errors would also be caught by us here, making it easier to troubleshoot.
             if (Environment.OSVersion.Platform == PlatformID.Win32NT)
             {
-                string nativeLibrariesDirectory;
-
-                if (Environment.Is64BitProcess)
-                {
-                    nativeLibrariesDirectory = Path.Combine(directory, "win7-x64");
-                }
-                else
-                {
-                    nativeLibrariesDirectory = Path.Combine(directory, "win7-x86");
-                }
-
-                if (!Directory.Exists(nativeLibrariesDirectory))
-                {
-                    throw new ArgumentOutOfRangeException(nameof(directory), $"The directory '{directory}' does not contain a subdirectory for the current architecture. The directory '{nativeLibrariesDirectory}' does not exist.");
-                }
-
-                string path = Path.Combine(nativeLibrariesDirectory, $"{UnmanagedLibrary}.dll");
-
-                if (!File.Exists(path))
-                {
-                    throw new FileNotFoundException($"Could not load libturbojpeg from {path}", path);
-                }
-
+                string path = UnmanagedLibrary;
+                
                 // Attempt to load the libraries. If they are not found, throw an error.
                 // See also http://blogs.msdn.com/b/adam_nathan/archive/2003/04/25/56643.aspx for
                 // more information about GetLastWin32Error

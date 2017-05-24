@@ -11,8 +11,8 @@ namespace TurboJpegWrapper.Tests
     {
         public static IEnumerable<Bitmap> GetTestImages(string searchPattern)
         {
-            var path = Assembly.GetExecutingAssembly().Location;
-            var imagesDir = Path.Combine(Path.GetDirectoryName(path), "images");
+            var path = AppDomain.CurrentDomain.SetupInformation.ApplicationBase;
+            var imagesDir = Path.Combine(path, "images");
 
             foreach (var file in Directory.EnumerateFiles(imagesDir, searchPattern))
             {
@@ -49,8 +49,7 @@ namespace TurboJpegWrapper.Tests
         {
             get
             {
-                var path = Assembly.GetExecutingAssembly().Location;
-                return Path.GetDirectoryName(path);
+                return AppDomain.CurrentDomain.SetupInformation.ApplicationBase;
             }
         }
     }
