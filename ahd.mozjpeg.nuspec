@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<package>
+  <metadata>
+    <id>ahd.mozjpeg</id>
+    <version>$version$</version>
+    <authors>sergeyter, quamotion, ahd GmbH &amp; Co. KG</authors>
+    <owners>ahd GmbH &amp; Co. KG</owners>
+    <title>.NET wrapper for mozjpeg</title>
+    <description>mozjpeg is an improved JPEG encoder by mozilla.</description>
+    <projectUrl>https://github.com/ahdde/AS.TurboJpegWrapper</projectUrl>
+    <licenseUrl>https://github.com/ahdde/AS.TurboJpegWrapper/blob/master/LICENSE.txt</licenseUrl>
+    <tags>mozjpeg</tags>
+    <language>en-US</language>
+  </metadata>
+  <files>
+    <file src="LibJpegWrapper\bin\Release\TurboJpegWrapper.dll" target="lib\net45" />
+    <file src="LibJpegWrapper\bin\Release\TurboJpegWrapper.xml" target="lib\net45" />
+  </files>
+</package>
