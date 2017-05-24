@@ -13,7 +13,7 @@
     <language>en-US</language>
   </metadata>
   <files>
-    <file src="LibJpegWrapper\bin\Release\TurboJpegWrapper.dll" target="lib\net45" />
-    <file src="LibJpegWrapper\bin\Release\TurboJpegWrapper.xml" target="lib\net45" />
+    <file src="LibJpegWrapper\bin\Release\ahd.mozjpeg.dll" target="lib\net45" />
+    <file src="LibJpegWrapper\bin\Release\ahd.mozjpeg.xml" target="lib\net45" />
   </files>
 </package>
