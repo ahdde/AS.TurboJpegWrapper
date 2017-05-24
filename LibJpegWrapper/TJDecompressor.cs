@@ -59,6 +59,21 @@ namespace TurboJpegWrapper
             return buf;
         }
 
+        /// <summary>
+        /// Decompress a JPEG image to an RGB, grayscale, or CMYK image.
+        /// </summary>
+        /// <param name="jpegBuf">Pointer to a buffer containing the JPEG image to decompress. This buffer is not modified</param>
+        /// <param name="jpegBufSize">Size of the JPEG image (in bytes)</param>
+        /// <param name="outBuf">Pointer to a buffer for the Raw pixel data of specified format</param>
+        /// <param name="outBufSize">Size of the output buffer (in bytes)</param>
+        /// <param name="destPixelFormat">Pixel format of the destination image (see <see cref="PixelFormat"/> "Pixel formats".)</param>
+        /// <param name="flags">The bitwise OR of one or more of the <see cref="TJFlags"/> "flags"</param>
+        /// <param name="width">Width of image in pixels</param>
+        /// <param name="height">Height of image in pixels</param>
+        /// <param name="stride">Bytes per line in the destination image</param>
+        /// <returns>Raw pixel data of specified format</returns>
+        /// <exception cref="TJException">Throws if underlying decompress function failed</exception>
+        /// <exception cref="ObjectDisposedException">Object is disposed and can not be used anymore</exception>
         public unsafe void Decompress(IntPtr jpegBuf, ulong jpegBufSize, IntPtr outBuf, int outBufSize, TJPixelFormats destPixelFormat, TJFlags flags, out int width, out int height, out int stride)
         {
             if (_isDisposed)

@@ -10,7 +10,7 @@ namespace TurboJpegWrapper.Tests
         private TJDecompressor _decompressor;
         private string OutDirectory { get { return Path.Combine(TestUtils.BinPath, "decompress_images_out"); } }
 
-        [TestFixtureSetUp]
+        [OneTimeSetUp]
         public void SetUp()
         {
             _decompressor = new TJDecompressor();
@@ -21,7 +21,7 @@ namespace TurboJpegWrapper.Tests
             Directory.CreateDirectory(OutDirectory);
         }
 
-        [TestFixtureTearDown]
+        [OneTimeTearDown]
         public void Clean()
         {
             _decompressor.Dispose();

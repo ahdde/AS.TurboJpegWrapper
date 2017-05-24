@@ -10,7 +10,7 @@ namespace TurboJpegWrapper.Tests
         private TJTransformer _transformer;
         private string OutDirectory { get { return Path.Combine(TestUtils.BinPath, "transform_images_out"); } }
 
-        [TestFixtureSetUp]
+        [OneTimeSetUp]
         public void SetUp()
         {
             _transformer = new TJTransformer();
@@ -21,7 +21,7 @@ namespace TurboJpegWrapper.Tests
             Directory.CreateDirectory(OutDirectory);
         }
 
-        [TestFixtureTearDown]
+        [OneTimeTearDown]
         public void Clean()
         {
             _transformer.Dispose();
