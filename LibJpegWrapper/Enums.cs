@@ -235,7 +235,7 @@ namespace TurboJpegWrapper
         /// </summary>
         FASTUPSAMPLE = 256,
         /// <summary>
-        /// Disable buffer (re)allocation.  If passed to <see cref="TurboJpegImport.tjCompress2"/> or #tjTransform(), 
+        /// Disable buffer (re)allocation.  If passed to <see cref="TurboJpegImport.Compress2"/> or #Transform(), 
         /// this flag will cause those functions to generate an error 
         /// if the JPEG image buffer is invalid or too small rather than attempting to allocate or reallocate that buffer.  
         /// This reproduces the behavior of earlier versions of TurboJPEG.
@@ -262,7 +262,7 @@ namespace TurboJpegWrapper
     }
 
     /// <summary>
-    /// Transform operations for <see cref="TurboJpegImport.tjTransform"/>
+    /// Transform operations for <see cref="TurboJpegImport.Transform"/>
     /// </summary>
     public enum TJTransformOperations
     {
@@ -321,7 +321,7 @@ namespace TurboJpegWrapper
     public enum TJTransformOptions
     {
         /// <summary>
-        /// This option will cause <see cref="TurboJpegImport.tjTransform"/> to return an error if the transform is
+        /// This option will cause <see cref="TurboJpegImport.Transform"/> to return an error if the transform is
         /// not perfect.  Lossless transforms operate on MCU blocks, whose size depends
         /// on the level of chrominance subsampling used  
         /// If the image's width or height is not evenly divisible
@@ -335,12 +335,12 @@ namespace TurboJpegWrapper
         PERFECT = 1,
 
         /// <summary>
-        /// This option will cause <see cref="TurboJpegImport.tjTransform"/> to discard any partial MCU blocks that cannot be transformed.
+        /// This option will cause <see cref="TurboJpegImport.Transform"/> to discard any partial MCU blocks that cannot be transformed.
         /// </summary>
         TRIM = 2,
 
         /// <summary>
-        /// This option will enable lossless cropping.  See <see cref="TurboJpegImport.tjTransform"/> for more information.
+        /// This option will enable lossless cropping.  See <see cref="TurboJpegImport.Transform"/> for more information.
         /// </summary>
         CROP = 4,
 
@@ -350,7 +350,7 @@ namespace TurboJpegWrapper
         GRAY = 8,
 
         /// <summary>
-        /// This option will prevent <see cref="TurboJpegImport.tjTransform"/> from outputting a JPEG image for
+        /// This option will prevent <see cref="TurboJpegImport.Transform"/> from outputting a JPEG image for
         /// this particular transform (this can be used in conjunction with a custom
         /// filter to capture the transformed DCT coefficients without transcoding them.) 
         /// </summary>

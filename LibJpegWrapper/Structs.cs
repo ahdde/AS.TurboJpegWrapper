@@ -85,7 +85,7 @@ namespace TurboJpegWrapper
     /// <param name="transformIndex">
     /// ID number of the transformed image to which
     /// <paramref name="coeffs"/> belongs.  This is the same as the index of the transform
-    /// in the "transforms" array that was passed to <see cref="TurboJpegImport.tjTransform"/> 
+    /// in the "transforms" array that was passed to <see cref="TurboJpegImport.Transform"/> 
     /// </param>
     /// <param name="transform">
     /// A pointer to a <see cref="tjtransform"/> structure that specifies the

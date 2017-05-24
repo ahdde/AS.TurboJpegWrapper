@@ -11,7 +11,7 @@ namespace TurboJpegWrapper
     /// </summary>
     public class TJDecompressor : IDisposable
     {
-        private IntPtr _decompressorHandle = IntPtr.Zero;
+        private IntPtr _decompressorHandle;
         private bool _isDisposed;
         private readonly object _lock = new object();
 
@@ -23,7 +23,7 @@ namespace TurboJpegWrapper
         /// </exception>
         public TJDecompressor()
         {
-            _decompressorHandle = TurboJpegImport.tjInitDecompress();
+            _decompressorHandle = TurboJpegImport.InitDecompress();
 
             if (_decompressorHandle == IntPtr.Zero)
             {
@@ -47,13 +47,13 @@ namespace TurboJpegWrapper
         public unsafe byte[] Decompress(IntPtr jpegBuf, ulong jpegBufSize, TJPixelFormats destPixelFormat, TJFlags flags, out int width, out int height, out int stride)
         {
             int outBufSize;
-            this.GetImageInfo(jpegBuf, jpegBufSize, destPixelFormat, out width, out height, out stride, out outBufSize);
+            GetImageInfo(jpegBuf, jpegBufSize, destPixelFormat, out width, out height, out stride, out outBufSize);
 
             var buf = new byte[outBufSize];
 
             fixed (byte* bufPtr = buf)
             {
-                this.Decompress(jpegBuf, jpegBufSize, (IntPtr)bufPtr, outBufSize, destPixelFormat, flags, out width, out height, out stride);
+                Decompress(jpegBuf, jpegBufSize, (IntPtr)bufPtr, outBufSize, destPixelFormat, flags, out width, out height, out stride);
             }
 
             return buf;
@@ -74,7 +74,7 @@ namespace TurboJpegWrapper
         /// <returns>Raw pixel data of specified format</returns>
         /// <exception cref="TJException">Throws if underlying decompress function failed</exception>
         /// <exception cref="ObjectDisposedException">Object is disposed and can not be used anymore</exception>
-        public unsafe void Decompress(IntPtr jpegBuf, ulong jpegBufSize, IntPtr outBuf, int outBufSize, TJPixelFormats destPixelFormat, TJFlags flags, out int width, out int height, out int stride)
+        public void Decompress(IntPtr jpegBuf, ulong jpegBufSize, IntPtr outBuf, int outBufSize, TJPixelFormats destPixelFormat, TJFlags flags, out int width, out int height, out int stride)
         {
             if (_isDisposed)
                 throw new ObjectDisposedException("this");
@@ -225,7 +225,10 @@ namespace TurboJpegWrapper
 
             var funcResult = TurboJpegImport.tjDecompressHeader(_decompressorHandle, jpegBuf, jpegBufSize,
                 out width, out height, out subsampl, out colorspace);
-
+            if (funcResult != 0)
+            {
+                TJUtils.GetErrorAndThrow();
+            }
             stride = TurboJpegImport.TJPAD(width * TurboJpegImport.PixelSizes[destPixelFormat]);
             bufSize = stride * height;
         }
@@ -266,37 +269,29 @@ namespace TurboJpegWrapper
         /// <filterpriority>2</filterpriority>
         public void Dispose()
         {
-
-            if (_isDisposed)
-                return;
-
-            lock (_lock)
-            {
-                if (_isDisposed)
-                    return;
-
-                Dispose(true);
-                GC.SuppressFinalize(this);
-            }
+            Dispose(true);
+            GC.SuppressFinalize(this);
         }
 
-        private void Dispose(bool callFromUserCode)
+        /// <summary>
+        /// Releases resources
+        /// </summary>
+        protected virtual void Dispose(bool disposing)
         {
-            if (callFromUserCode)
-            {
-                _isDisposed = true;
-            }
+            if (_isDisposed)
+                return;
 
             // If for whathever reason, the handle was not initialized correctly (e.g. an exception
             // in the constructor), we shouldn't free it either.
             if (_decompressorHandle != IntPtr.Zero)
             {
-                TurboJpegImport.tjDestroy(_decompressorHandle);
+                TurboJpegImport.Destroy(_decompressorHandle);
 
                 // Set the handle to IntPtr.Zero, to prevent double execution of this method
                 // (i.e. make calling Dispose twice a safe thing to do).
                 _decompressorHandle = IntPtr.Zero;
             }
+            _isDisposed = true;
         }
 
         /// <summary>

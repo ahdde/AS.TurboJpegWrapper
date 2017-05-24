@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Reflection;
+using NUnit.Framework;
 
 namespace TurboJpegWrapper.Tests
 {
@@ -11,8 +12,7 @@ namespace TurboJpegWrapper.Tests
     {
         public static IEnumerable<Bitmap> GetTestImages(string searchPattern)
         {
-            var path = AppDomain.CurrentDomain.SetupInformation.ApplicationBase;
-            var imagesDir = Path.Combine(path, "images");
+            var imagesDir = Path.Combine(BinPath, "images");
 
             foreach (var file in Directory.EnumerateFiles(imagesDir, searchPattern))
             {
@@ -49,6 +49,7 @@ namespace TurboJpegWrapper.Tests
         {
             get
             {
+                Assert.IsTrue(TurboJpegImport.LibraryFound);
                 return AppDomain.CurrentDomain.SetupInformation.ApplicationBase;
             }
         }

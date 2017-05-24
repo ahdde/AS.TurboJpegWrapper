@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Drawing.Imaging;
-using System.IO;
 using System.Runtime.InteropServices;
 
 namespace TurboJpegWrapper
@@ -13,7 +12,7 @@ namespace TurboJpegWrapper
         /// <exception cref="TJException"> Throws if low level turbo jpeg function fails </exception>
         public static void GetErrorAndThrow()
         {
-            var error = TurboJpegImport.tjGetErrorStr();
+            var error = TurboJpegImport.GetErrorStr();
             throw new TJException(error);
         }
         /// <summary>

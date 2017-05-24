@@ -6,6 +6,7 @@ namespace TurboJpegWrapper
     /// <summary>
     /// Exception thrown then internal error in the underlying turbo jpeg library is occured
     /// </summary>
+    [Serializable]
     public class TJException : Exception
     {
         /// <summary>

@@ -24,7 +24,7 @@ namespace TurboJpegWrapper
         /// </exception>
         public TJCompressor()
         {
-            _compressorHandle = TurboJpegImport.tjInitCompress();
+            _compressorHandle = TurboJpegImport.InitCompress();
 
             if (_compressorHandle == IntPtr.Zero)
             {
@@ -124,7 +124,7 @@ namespace TurboJpegWrapper
             ulong bufSize = 0;
             try
             {
-                var result = TurboJpegImport.tjCompress2(
+                var result = TurboJpegImport.Compress2(
                     _compressorHandle,
                     srcPtr,
                     width,
@@ -149,7 +149,7 @@ namespace TurboJpegWrapper
             }
             finally
             {
-                TurboJpegImport.tjFree(buf);
+                TurboJpegImport.Free(buf);
             }
         }
 
@@ -202,7 +202,7 @@ namespace TurboJpegWrapper
             {
                 fixed (byte* srcBufPtr = srcBuf)
                 {
-                    var result = TurboJpegImport.tjCompress2(
+                    var result = TurboJpegImport.Compress2(
                         _compressorHandle,
                         (IntPtr)srcBufPtr,
                         width,
@@ -227,7 +227,7 @@ namespace TurboJpegWrapper
             }
             finally
             {
-                TurboJpegImport.tjFree(buf);
+                TurboJpegImport.Free(buf);
             }
         }
 
@@ -237,37 +237,29 @@ namespace TurboJpegWrapper
         /// <filterpriority>2</filterpriority>
         public void Dispose()
         {
-
-            if (_isDisposed)
-                return;
-
-            lock (_lock)
-            {
-                if (_isDisposed)
-                    return;
-
-                Dispose(true);
-                GC.SuppressFinalize(this);
-            }
+            Dispose(true);
+            GC.SuppressFinalize(this);
         }
 
-        private void Dispose(bool callFromUserCode)
+        /// <summary>
+        /// Releases resources
+        /// </summary>
+        protected virtual void Dispose(bool disposing)
         {
-            if (callFromUserCode)
-            {
-                _isDisposed = true;
-            }
+            if (_isDisposed)
+                return;
 
             // If for whathever reason, the handle was not initialized correctly (e.g. an exception
             // in the constructor), we shouldn't free it either.
             if (_compressorHandle != IntPtr.Zero)
             {
-                TurboJpegImport.tjDestroy(_compressorHandle);
+                TurboJpegImport.Destroy(_compressorHandle);
 
                 // Set the handle to IntPtr.Zero, to prevent double execution of this method
                 // (i.e. make calling Dispose twice a safe thing to do).
                 _compressorHandle = IntPtr.Zero;
             }
+            _isDisposed = true;
         }
 
 

@@ -9,7 +9,7 @@ namespace TurboJpegWrapper
     /// <summary>
     /// Class for loseless transform jpeg images
     /// </summary>
-    public class TJTransformer
+    public class TJTransformer:IDisposable
     {
         private IntPtr _transformHandle;
         private bool _isDisposed;
@@ -23,7 +23,7 @@ namespace TurboJpegWrapper
         /// </exception>
         public TJTransformer()
         {
-            _transformHandle = TurboJpegImport.tjInitTransform();
+            _transformHandle = TurboJpegImport.InitTransform();
 
             if (_transformHandle == IntPtr.Zero)
             {
@@ -100,7 +100,7 @@ namespace TurboJpegWrapper
             var transformsPtr =  TJUtils.StructArrayToIntPtr(tjTransforms);
             try
             {
-                funcResult = TurboJpegImport.tjTransform(_transformHandle, jpegBuf, jpegBufSize, count, destBufs,
+                funcResult = TurboJpegImport.Transform(_transformHandle, jpegBuf, jpegBufSize, count, destBufs,
                     destSizes, transformsPtr, (int)flags);
                 if (funcResult == -1)
                 {
@@ -116,7 +116,7 @@ namespace TurboJpegWrapper
                     Marshal.Copy(ptr, item, 0, (int)size);
                     result.Add(item);
 
-                    TurboJpegImport.tjFree(ptr);
+                    TurboJpegImport.Free(ptr);
                 }
                 return result.ToArray();
 
@@ -188,37 +188,28 @@ namespace TurboJpegWrapper
         /// <filterpriority>2</filterpriority>
         public void Dispose()
         {
-
-            if (_isDisposed)
-                return;
-
-            lock (_lock)
-            {
-                if (_isDisposed)
-                    return;
-
-                Dispose(true);
-                GC.SuppressFinalize(this);
-            }
+            Dispose(true);
+            GC.SuppressFinalize(this);
         }
 
-        private void Dispose(bool callFromUserCode)
+        /// <summary>
+        /// Releases resources
+        /// </summary>
+        protected virtual void Dispose(bool disposing)
         {
-            if (callFromUserCode)
-            {
-                _isDisposed = true;
-            }
+            if (_isDisposed) return;
 
             // If for whathever reason, the handle was not initialized correctly (e.g. an exception
             // in the constructor), we shouldn't free it either.
             if (_transformHandle != IntPtr.Zero)
             {
-                TurboJpegImport.tjDestroy(_transformHandle);
+                TurboJpegImport.Destroy(_transformHandle);
 
                 // Set the handle to IntPtr.Zero, to prevent double execution of this method
                 // (i.e. make calling Dispose twice a safe thing to do).
                 _transformHandle = IntPtr.Zero;
             }
+            _isDisposed = true;
         }
 
         /// <summary>
