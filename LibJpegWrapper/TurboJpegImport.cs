@@ -132,8 +132,7 @@ namespace TurboJpegWrapper
         /// <param name="handle">A handle to a TurboJPEG compressor or transformer instance</param>
         /// 
         /// <param name="srcBuf">
-        /// Pointer to an image buffer containing RGB, grayscale, or CMYK pixels to be compressed.  
-        /// This buffer is not modified.
+        /// Pointer to an image buffer containing RGB, grayscale, or CMYK pixels to be compressed.
         /// </param>
         /// 
         /// <param name="width">Width (in pixels) of the source image</param>
@@ -236,7 +235,7 @@ namespace TurboJpegWrapper
         /// Retrieve information about a JPEG image without decompressing it.
         /// </summary>
         /// <param name="handle">A handle to a TurboJPEG decompressor or transformer instance</param>
-        /// <param name="jpegBuf">Pointer to a buffer containing a JPEG image.  This buffer is not modified.</param>
+        /// <param name="jpegBuf">Pointer to a buffer containing a JPEG image.</param>
         /// <param name="jpegSize">Size of the JPEG image (in bytes)</param>
         /// <param name="width">Pointer to an integer variable that will receive the width (in pixels) of the JPEG image</param>
         /// <param name="height">Pointer to an integer variable that will receive the height (in pixels) of the JPEG image</param>
@@ -278,7 +277,7 @@ namespace TurboJpegWrapper
         /// Decompress a JPEG image to an RGB, grayscale, or CMYK image.
         /// </summary>
         /// <param name="handle">A handle to a TurboJPEG decompressor or transformer instance</param>
-        /// <param name="jpegBuf">Pointer to a buffer containing the JPEG image to decompress. This buffer is not modified.</param>
+        /// <param name="jpegBuf">Pointer to a buffer containing the JPEG image to decompress.</param>
         /// <param name="jpegSize">Size of the JPEG image (in bytes)</param>
         /// <param name="dstBuf">
         /// Pointer to an image buffer that will receive the decompressed image.
@@ -372,7 +371,7 @@ namespace TurboJpegWrapper
         /// </summary>
         /// <param name="handle">A handle to a TurboJPEG transformer instance</param>
         /// <param name="jpegBuf">
-        /// Pointer to a buffer containing the JPEG source image to transform.This buffer is not modified.
+        /// Pointer to a buffer containing the JPEG source image to transform.
         /// </param>
         /// <param name="jpegSize">Size of the JPEG source image (in bytes)</param>
         /// <param name="n">The number of transformed JPEG images to generate</param>
@@ -458,7 +457,8 @@ namespace TurboJpegWrapper
         /// <returns>A descriptive error message explaining why the last command failed</returns>
         public static string GetErrorStr()
         {
-            return NativeMethods.tjGetErrorStr();
+            var ptr = NativeMethods.tjGetErrorStr();
+            return Marshal.PtrToStringAnsi(ptr);
         }
 
         private static class NativeMethods
@@ -477,9 +477,8 @@ namespace TurboJpegWrapper
             [DllImport(UnmanagedLibrary, CallingConvention = CallingConvention.Cdecl)]
             public static extern int tjDestroy(IntPtr handle);
 
-            [DllImport(UnmanagedLibrary, CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
-            [return: MarshalAs(UnmanagedType.LPStr)]
-            public static extern string tjGetErrorStr();
+            [DllImport(UnmanagedLibrary, CallingConvention = CallingConvention.Cdecl)]
+            public static extern IntPtr tjGetErrorStr();
 
             [DllImport(UnmanagedLibrary, CallingConvention = CallingConvention.Cdecl)]
             public static extern IntPtr tjInitTransform();

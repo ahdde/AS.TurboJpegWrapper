@@ -1,3 +1,8 @@
+cd mozjpeg
+git reset --hard
+cd ..
+git apply turbojpeg.patch
+
 mkdir mozjpeg\bin\win32
 mkdir mozjpeg\bin\win64
 
