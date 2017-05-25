@@ -44,7 +44,7 @@ namespace TurboJpegWrapper.PerformanceTests
         private static void JpegTurboCompression()
         {
             var sw = new Stopwatch();
-            var sourceImage = (Bitmap)Image.FromFile(@"D:\Downloads\1.jpg");
+            var sourceImage = (Bitmap)Image.FromFile(@"0017.jpg");
             var width = sourceImage.Width;
             var height = sourceImage.Height;
             long average = 0;
@@ -55,11 +55,12 @@ namespace TurboJpegWrapper.PerformanceTests
             try
             {
                 Console.WriteLine("Using libjpeg turbo");
+                long size = -1;
                 while (!_stop)
                 {
                     sw.Restart();
 
-                    compressor.Compress(sourceImage, TJSubsamplingOptions.Gray, Quality, TJFlags.BottomUp);
+                    size = compressor.Compress(sourceImage, TJSubsamplingOptions.Gray, Quality, TJFlags.BottomUp).LongLength;
 
                     sw.Stop();
                     var sleepValue = 1000 / 25.0 - sw.ElapsedMilliseconds;
@@ -71,6 +72,7 @@ namespace TurboJpegWrapper.PerformanceTests
                 }
 
                 Console.WriteLine("Average compression time for image {0}x{1} is {2:f3} ms. Iterations count {3}", width, height, (double)average / iterations, iterations);
+                Console.WriteLine("Compressed size is {0} bytes", size);
             }
             finally
             {
@@ -84,12 +86,13 @@ namespace TurboJpegWrapper.PerformanceTests
         private static void SystemDrawingCompression()
         {
             var sw = new Stopwatch();
-            var sourceImage = (Bitmap)Image.FromFile(@"D:\Downloads\1.jpg");
+            var sourceImage = (Bitmap)Image.FromFile(@"0017.jpg");
             var width = sourceImage.Width;
             var height = sourceImage.Height;
             long average = 0;
             var iterations = 0;
             Console.WriteLine("Using System.Drawing");
+            long size = -1;
             while (!_stop)
             {
                 sw.Restart();
@@ -101,6 +104,7 @@ namespace TurboJpegWrapper.PerformanceTests
                     var encoderParameter = new EncoderParameter(encoder2, (long)Quality);
                     encoderParams.Param[0] = encoderParameter;
                     sourceImage.Save(memoryStream, encoder1, encoderParams);
+                    size = memoryStream.Position;
                 }
                 sw.Stop();
                 var sleepValue = 1000 / 25.0 - sw.ElapsedMilliseconds;
@@ -113,6 +117,7 @@ namespace TurboJpegWrapper.PerformanceTests
                 Thread.Sleep((int)sleepValue);
             }
             Console.WriteLine("Average compression time for image {0}x{1} is {2:f3} ms. Iterations count {3}", width, height, (double)average / iterations, iterations);
+            Console.WriteLine("Compressed size is {0} bytes", size);
             sourceImage.Dispose();
             Wait.Set();
         }
