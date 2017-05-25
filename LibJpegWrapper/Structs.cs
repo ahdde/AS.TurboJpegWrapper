@@ -7,17 +7,17 @@ namespace TurboJpegWrapper
     /// Scaling factor
     /// </summary>
     [StructLayout(LayoutKind.Sequential)]
-    struct tjscalingfactor
+    internal struct TJScalingfactor
     {
         /// <summary>
         /// Numerator
         /// </summary>
-        public int num { get; set; }
+        public int Num { get; set; }
 
         /// <summary>
         /// Denominator
         /// </summary>
-        public int denom { get; set; }
+        public int Denom { get; set; }
     }
 
 
@@ -25,25 +25,25 @@ namespace TurboJpegWrapper
     /// Lossless transform
     /// </summary>
     [StructLayout(LayoutKind.Sequential)]
-    public  struct tjtransform
+    internal  struct TJTransform
     {
         /// <summary>
         /// Cropping region
         /// </summary>
-        public TJRegion r { get; set; }
+        public TJRegion R { get; set; }
         /// <summary>
         /// One of the <see cref="TJTransformOperations"/> "transform operations"
         /// </summary>
-        public int op { get; set; }
+        public TJTransformOperations Op { get; set; }
         /// <summary>
         /// The bitwise OR of one of more of the <see cref="TJTransformOptions"/> "transform options"
         /// </summary>
-        public int options { get; set; }
+        public int Options { get; set; }
 
         /// <summary>
         /// Arbitrary data that can be accessed within the body of the callback function
         /// </summary>
-        public IntPtr data { get; set; }
+        public IntPtr Data { get; set; }
 
         /// <summary>
         /// A callback function that can be used to modify the DCT coefficients
@@ -51,7 +51,7 @@ namespace TurboJpegWrapper
         /// new JPEG image.  This allows for custom filters or other transformations
         /// to be applied in the frequency domain.
         /// </summary>
-        public CustomFilter customFilter { get; set; }
+        public CustomFilter CustomFilter { get; set; }
     }
 
     /// <summary>
@@ -88,7 +88,7 @@ namespace TurboJpegWrapper
     /// in the "transforms" array that was passed to <see cref="TurboJpegImport.Transform"/> 
     /// </param>
     /// <param name="transform">
-    /// A pointer to a <see cref="tjtransform"/> structure that specifies the
+    /// A pointer to a <see cref="TJTransform"/> structure that specifies the
     /// parameters and/or cropping region for this transform
     /// </param>
     /// <returns>0 if the callback was successful, or -1 if an error occurred.</returns>
@@ -96,6 +96,6 @@ namespace TurboJpegWrapper
     /// Original signature is:
     /// <para><c>int customFilter(short *coeffs, tjregion arrayRegion, tjregion planeRegion, int componentIndex, int transformIndex, struct tjtransform * transform)</c></para> 
     /// </remarks>
-    public delegate int CustomFilter(IntPtr coeffs, IntPtr arrayRegion, IntPtr planeRegion, int componentIndex, int transformIndex, IntPtr transform);
+    public delegate int CustomFilter(IntPtr coeffs, TJRegion arrayRegion, TJRegion planeRegion, int componentIndex, int transformIndex, IntPtr transform);
 
 }

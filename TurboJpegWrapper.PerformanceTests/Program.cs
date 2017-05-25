@@ -59,7 +59,7 @@ namespace TurboJpegWrapper.PerformanceTests
                 {
                     sw.Restart();
 
-                    compressor.Compress(sourceImage, TJSubsamplingOptions.TJSAMP_GRAY, Quality, TJFlags.BOTTOMUP);
+                    compressor.Compress(sourceImage, TJSubsamplingOptions.Gray, Quality, TJFlags.BottomUp);
 
                     sw.Stop();
                     var sleepValue = 1000 / 25.0 - sw.ElapsedMilliseconds;

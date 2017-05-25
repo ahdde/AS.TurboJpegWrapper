@@ -1,5 +1,4 @@
-﻿// ReSharper disable InconsistentNaming
-// ReSharper disable UnusedMember.Global
+﻿// ReSharper disable UnusedMember.Global
 
 using System;
 
@@ -17,7 +16,7 @@ namespace TurboJpegWrapper
         /// decompressed to any of the extended RGB pixel formats or grayscale, but
         /// they cannot be decompressed to YUV images.
         /// </summary>
-        TJCS_RGB = 0,
+        RGB = 0,
 
         /// <summary>
         /// YCbCr colorspace.  YCbCr is not an absolute colorspace but rather a
@@ -34,7 +33,7 @@ namespace TurboJpegWrapper
         /// can be compressed from and decompressed to any of the extended RGB pixel
         /// formats or grayscale, or they can be decompressed to YUV planar images. 
         /// </summary>
-        TJCS_YCbCr,
+        YCbCr,
 
         /// <summary>
         /// Grayscale colorspace.  The JPEG image retains only the luminance data (Y
@@ -43,7 +42,7 @@ namespace TurboJpegWrapper
         /// the extended RGB pixel formats or grayscale, or they can be decompressed
         /// to YUV planar images. 
         /// </summary>
-        TJCS_GRAY,
+        Gray,
 
         /// <summary>
         /// CMYK colorspace.  When compressing the JPEG image, the C, M, Y, and K
@@ -51,7 +50,7 @@ namespace TurboJpegWrapper
         /// colorspace conversion or subsampling is performed.  CMYK JPEG images can
         /// only be decompressed to CMYK pixels.
         /// </summary>
-        TJCS_CMYK,
+        CMYK,
 
         /// <summary>
         /// YCCK colorspace.  YCCK (AKA "YCbCrK") is not an absolute colorspace but
@@ -62,7 +61,7 @@ namespace TurboJpegWrapper
         /// perceptual loss.  YCCK JPEG images can only be compressed from and
         /// decompressed to CMYK pixels.
         /// </summary>
-        TJCS_YCCK
+        YCCK
     };
 
     /// <summary>
@@ -81,31 +80,31 @@ namespace TurboJpegWrapper
         /// <summary>
         /// 4:4:4 chrominance subsampling (no chrominance subsampling).  The JPEG or * YUV image will contain one chrominance component for every pixel in the source image.
         /// </summary>
-        TJSAMP_444 = 0,
+        Sampling444 = 0,
 
         /// <summary>
         /// 4:2:2 chrominance subsampling.  The JPEG or YUV image will contain one
         /// chrominance component for every 2x1 block of pixels in the source image.
         /// </summary>
-        TJSAMP_422,
+        Sampling422,
 
         /// <summary>
         /// 4:2:0 chrominance subsampling.  The JPEG or YUV image will contain one
         /// chrominance component for every 2x2 block of pixels in the source image.
         /// </summary>
-        TJSAMP_420,
+        Sampling420,
 
         /// <summary>
         /// Grayscale.  The JPEG or YUV image will contain no chrominance components.
         /// </summary>
-        TJSAMP_GRAY,
+        Gray,
 
         /// <summary>
         /// 4:4:0 chrominance subsampling.  The JPEG or YUV image will contain one
         /// chrominance component for every 1x2 block of pixels in the source image. 
         /// </summary>
         /// <remarks>4:4:0 subsampling is not fully accelerated in libjpeg-turbo.</remarks>
-        TJSAMP_440,
+        Sampling440,
 
         /// <summary>
         /// 4:1:1 chrominance subsampling.  The JPEG or YUV image will contain one
@@ -117,7 +116,7 @@ namespace TurboJpegWrapper
         /// horizontal features.
         /// </summary>
         /// <remarks> 4:1:1 subsampling is not fully accelerated in libjpeg-turbo.</remarks>
-        TJSAMP_411
+        Sampling411
     };
 
     /// <summary>
@@ -130,70 +129,70 @@ namespace TurboJpegWrapper
         /// stored in 3-byte pixels in the order R, G, B from lowest to highest byte
         /// address within each pixel.
         /// </summary>
-        TJPF_RGB = 0,
+        RGB = 0,
         /// <summary>
         /// BGR pixel format.  The red, green, and blue components in the image are
         /// stored in 3-byte pixels in the order B, G, R from lowest to highest byte
         /// address within each pixel.
         /// </summary>
-        TJPF_BGR,
+        BGR,
         /// <summary>
         /// RGBX pixel format.  The red, green, and blue components in the image are
         /// stored in 4-byte pixels in the order R, G, B from lowest to highest byte
         /// address within each pixel.  The X component is ignored when compressing
         /// and undefined when decompressing. 
         /// </summary>
-        TJPF_RGBX,
+        RGBX,
         /// <summary>
         /// BGRX pixel format.  The red, green, and blue components in the image are
         /// stored in 4-byte pixels in the order B, G, R from lowest to highest byte
         /// address within each pixel.  The X component is ignored when compressing
         /// and undefined when decompressing.
         ///  </summary>
-        TJPF_BGRX,
+        BGRX,
         /// <summary>
         /// XBGR pixel format.  The red, green, and blue components in the image are
         /// stored in 4-byte pixels in the order R, G, B from highest to lowest byte
         /// address within each pixel.  The X component is ignored when compressing
         /// and undefined when decompressing. 
         /// </summary>
-        TJPF_XBGR,
+        XBGR,
         /// <summary>
         /// XRGB pixel format.  The red, green, and blue components in the image are
         /// stored in 4-byte pixels in the order B, G, R from highest to lowest byte
         /// address within each pixel.  The X component is ignored when compressing
         /// and undefined when decompressing.
         /// </summary>
-        TJPF_XRGB,
+        XRGB,
         /// <summary>
         /// Grayscale pixel format.  Each 1-byte pixel represents a luminance
         /// (brightness) level from 0 to 255.
         /// </summary>
-        TJPF_GRAY,
+        Gray,
         /// <summary>
-        /// RGBA pixel format.  This is the same as <see cref="TJPF_RGBX"/>, except that when
+        /// RGBA pixel format.  This is the same as <see cref="RGBX"/>, except that when
         /// decompressing, the X component is guaranteed to be 0xFF, which can be
         /// interpreted as an opaque alpha channel.
         /// </summary>
-        TJPF_RGBA,
+        RGBA,
         /// <summary>
-        /// BGRA pixel format.  This is the same as <see cref="TJPF_BGRX"/>, except that when
+        /// BGRA pixel format.  This is the same as <see cref="BGRX"/>, except that when
         /// decompressing, the X component is guaranteed to be 0xFF, which can be
         /// interpreted as an opaque alpha channel.
         /// </summary>
-        TJPF_BGRA,
+        BGRA,
         /// <summary>
-        /// ABGR pixel format.  This is the same as <see cref="TJPF_XBGR"/>, except that when
+        /// ABGR pixel format.  This is the same as <see cref="XBGR"/>, except that when
         /// decompressing, the X component is guaranteed to be 0xFF, which can be
         /// interpreted as an opaque alpha channel.
         /// </summary>
-        TJPF_ABGR,
+        ABGR,
         /// <summary>
-        /// ARGB pixel format.  This is the same as <see cref="TJPF_XRGB"/>, except that when
+        /// ARGB pixel format.  This is the same as <see cref="XRGB"/>, except that when
         /// decompressing, the X component is guaranteed to be 0xFF, which can be
         /// interpreted as an opaque alpha channel.
         /// </summary>
-        TJPF_ARGB,
+        ARGB,
         /// <summary>
         /// CMYK pixel format.  Unlike RGB, which is an additive color model used
         /// primarily for display, CMYK (Cyan/Magenta/Yellow/Key) is a subtractive
@@ -209,7 +208,7 @@ namespace TurboJpegWrapper
         /// CMYK pixels into a YCCK JPEG image (see #TJCS_YCCK) and decompressing YCCK
         /// JPEG images into CMYK pixels. 
         /// </summary>
-        TJPF_CMYK
+        CMYK
     };
 
     /// <summary>
@@ -221,26 +220,26 @@ namespace TurboJpegWrapper
         /// <summary>
         /// Flags not set
         /// </summary>
-        NONE = 0,
+        None = 0,
         /// <summary>
         /// The uncompressed source/destination image is stored in bottom-up (Windows, OpenGL) order, 
         /// not top-down (X11) order.
         /// </summary>
-        BOTTOMUP = 2,
+        BottomUp = 2,
         /// <summary>
         /// When decompressing an image that was compressed using chrominance subsampling, 
         /// use the fastest chrominance upsampling algorithm available in the underlying codec.  
         /// The default is to use smooth upsampling, which creates a smooth transition between 
         /// neighboring chrominance components in order to reduce upsampling artifacts in the decompressed image.
         /// </summary>
-        FASTUPSAMPLE = 256,
+        FastUpsample = 256,
         /// <summary>
         /// Disable buffer (re)allocation.  If passed to <see cref="TurboJpegImport.Compress2"/> or #Transform(), 
         /// this flag will cause those functions to generate an error 
         /// if the JPEG image buffer is invalid or too small rather than attempting to allocate or reallocate that buffer.  
         /// This reproduces the behavior of earlier versions of TurboJPEG.
         /// </summary>
-        NOREALLOC = 1024,
+        NoRealloc = 1024,
         /// <summary>
         /// Use the fastest DCT/IDCT algorithm available in the underlying codec.  The
         /// default if this flag is not specified is implementation-specific.  For
@@ -249,7 +248,7 @@ namespace TurboJpegWrapper
         /// only a very slight effect on accuracy, but it uses the accurate algorithm
         /// when decompressing, because this has been shown to have a larger effect. 
         /// </summary>
-        FASTDCT = 2048,
+        FastDCT = 2048,
         /// <summary>
         /// Use the most accurate DCT/IDCT algorithm available in the underlying codec.
         /// The default if this flag is not specified is implementation-specific.  For
@@ -258,7 +257,7 @@ namespace TurboJpegWrapper
         /// only a very slight effect on accuracy, but it uses the accurate algorithm
         /// when decompressing, because this has been shown to have a larger effect.
         /// </summary>
-        ACCURATEDCT = 4096
+        AccurateDCT = 4096
     }
 
     /// <summary>
@@ -269,49 +268,49 @@ namespace TurboJpegWrapper
         /// <summary>
         ///  Do not transform the position of the image pixels
         /// </summary>
-        TJXOP_NONE = 0,
+        None = 0,
 
         /// <summary>
         /// Flip (mirror) image horizontally.  This transform is imperfect if there
-        /// are any partial MCU blocks on the right edge (see <see cref="TJTransformOptions.PERFECT"/>.)</summary>
-        TJXOP_HFLIP,
+        /// are any partial MCU blocks on the right edge (see <see cref="TJTransformOptions.Perfect"/>.)</summary>
+        HFlip,
 
         /// <summary>
         /// Flip (mirror) image vertically.  This transform is imperfect if there are
-        /// any partial MCU blocks on the bottom edge (see <see cref="TJTransformOptions.PERFECT"/>.)
+        /// any partial MCU blocks on the bottom edge (see <see cref="TJTransformOptions.Perfect"/>.)
         /// </summary>
-        TJXOP_VFLIP,
+        VFlip,
 
         /// <summary>
         /// Transpose image (flip/mirror along upper left to lower right axis.)  This
         /// transform is always perfect.
         /// </summary>
-        TJXOP_TRANSPOSE,
+        Transpose,
 
         /// <summary>
         /// Transverse transpose image (flip/mirror along upper right to lower left
         /// axis.)  This transform is imperfect if there are any partial MCU blocks in
-        /// the image (see <see cref="TJTransformOptions.PERFECT"/>.) 
+        /// the image (see <see cref="TJTransformOptions.Perfect"/>.) 
         /// </summary>
-        TJXOP_TRANSVERSE,
+        Transverse,
 
         /// <summary>
         /// Rotate image clockwise by 90 degrees.  This transform is imperfect if
-        /// there are any partial MCU blocks on the bottom edge (<see cref="TJTransformOptions.PERFECT"/>.)
+        /// there are any partial MCU blocks on the bottom edge (<see cref="TJTransformOptions.Perfect"/>.)
         /// </summary>
-        TJXOP_ROT90,
+        Rot90,
 
         /// <summary>
         /// Rotate image 180 degrees.  This transform is imperfect if there are any
-        /// partial MCU blocks in the image (see <see cref="TJTransformOptions.PERFECT"/>.)
+        /// partial MCU blocks in the image (see <see cref="TJTransformOptions.Perfect"/>.)
         /// </summary>
-        TJXOP_ROT180,
+        Rot180,
 
         /// <summary>
         /// Rotate image counter-clockwise by 90 degrees.  This transform is imperfect
-        /// if there are any partial MCU blocks on the right edge (see <see cref="TJTransformOptions.PERFECT"/>.)
+        /// if there are any partial MCU blocks on the right edge (see <see cref="TJTransformOptions.Perfect"/>.)
         /// </summary>
-        TJXOP_ROT270
+        Rot270
     };
 
     /// <summary>
@@ -332,28 +331,28 @@ namespace TurboJpegWrapper
         /// that cannot be transformed will be left in place, which will create
         /// odd-looking strips on the right or bottom edge of the image.
         /// </summary>
-        PERFECT = 1,
+        Perfect = 1,
 
         /// <summary>
         /// This option will cause <see cref="TurboJpegImport.Transform"/> to discard any partial MCU blocks that cannot be transformed.
         /// </summary>
-        TRIM = 2,
+        Trim = 2,
 
         /// <summary>
         /// This option will enable lossless cropping.  See <see cref="TurboJpegImport.Transform"/> for more information.
         /// </summary>
-        CROP = 4,
+        Crop = 4,
 
         /// <summary>
         /// This option will discard the color data in the input image and produce a grayscale output image.
         /// </summary>
-        GRAY = 8,
+        Gray = 8,
 
         /// <summary>
         /// This option will prevent <see cref="TurboJpegImport.Transform"/> from outputting a JPEG image for
         /// this particular transform (this can be used in conjunction with a custom
         /// filter to capture the transformed DCT coefficients without transcoding them.) 
         /// </summary>
-        NOOUTPUT = 16,
+        NoOutput = 16,
     }
 }

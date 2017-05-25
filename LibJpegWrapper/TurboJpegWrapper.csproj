@@ -127,7 +127,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="FodyWeavers.xml" />
-    <Content Include="turbojpeg.h" />
+    <None Include="turbojpeg.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config">

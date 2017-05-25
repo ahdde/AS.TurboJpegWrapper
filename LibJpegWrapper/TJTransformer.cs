@@ -13,7 +13,6 @@ namespace TurboJpegWrapper
     {
         private IntPtr _transformHandle;
         private bool _isDisposed;
-        private readonly object _lock = new object();
 
         /// <summary>
         /// Creates new instance of <see cref="TJTransformer"/>
@@ -53,11 +52,11 @@ namespace TurboJpegWrapper
             var destSizes = new ulong[count];
 
 
-            int subsampl;
+            TJSubsamplingOptions subsampl;
             int colorspace;
             int width;
             int height;
-            var funcResult = TurboJpegImport.tjDecompressHeader(_transformHandle, jpegBuf, jpegBufSize,
+            var funcResult = TurboJpegImport.DecompressHeader(_transformHandle, jpegBuf, jpegBufSize,
                 out width, out height, out subsampl, out colorspace);
 
             if (funcResult == -1)
@@ -66,14 +65,14 @@ namespace TurboJpegWrapper
             }
 
             Size mcuSize;
-            if (!TurboJpegImport.MCUSizes.TryGetValue((TJSubsamplingOptions)subsampl, out mcuSize))
+            if (!TurboJpegImport.MCUSizes.TryGetValue(subsampl, out mcuSize))
             {
                 throw new TJException("Unable to read Subsampling Options from jpeg header");
             }
 
 
 
-            var tjTransforms = new tjtransform[count];
+            var tjTransforms = new TJTransform[count];
             for (var i = 0; i < count; i++)
             {
                 var x = CorrectRegionCoordinate(transforms[i].Region.X, mcuSize.Width);
@@ -82,19 +81,19 @@ namespace TurboJpegWrapper
                 var h = CorrectRegionSize(transforms[i].Region.Y, y, transforms[i].Region.H, height);
 
 
-                tjTransforms[i] = new tjtransform
+                tjTransforms[i] = new TJTransform
                 {
-                    op = (int)transforms[i].Operation,
-                    options = (int)transforms[i].Options,
-                    r = new TJRegion
+                    Op = transforms[i].Operation,
+                    Options = (int)transforms[i].Options,
+                    R = new TJRegion
                     {
                         X = x,
                         Y = y,
                         W = w,
                         H = h
                     },
-                    data = transforms[i].CallbackData,
-                    customFilter = transforms[i].CustomFilter
+                    Data = transforms[i].CallbackData,
+                    CustomFilter = transforms[i].CustomFilter
                 };
             }
             var transformsPtr =  TJUtils.StructArrayToIntPtr(tjTransforms);

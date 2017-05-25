@@ -26,26 +26,16 @@ namespace TurboJpegWrapper
             switch (pixelFormat)
             {
                 case PixelFormat.Format32bppArgb:
-                    return TJPixelFormats.TJPF_BGRA;
+                    return TJPixelFormats.BGRA;
                 case PixelFormat.Format24bppRgb:
-                    return TJPixelFormats.TJPF_BGR;
+                    return TJPixelFormats.BGR;
                 case PixelFormat.Format8bppIndexed:
-                    return TJPixelFormats.TJPF_GRAY;
+                    return TJPixelFormats.Gray;
                 default:
                     throw new NotSupportedException($"Provided pixel format \"{pixelFormat}\" is not supported");
             }
         }
-
-        /// <summary>
-        /// Returns actual platform name depending on pointer size
-        /// </summary>
-        /// <returns>"x86" for 32 bit processes and "x64" for 64 bit processes</returns>
-        public static string GetPlatformName()
-        {
-            return IntPtr.Size == sizeof(int) ? "x86" : "x64";
-        }
-
-
+        
         /// <summary>
         /// Converts array of managed structures to the unmanaged pointer
         /// </summary>

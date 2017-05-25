@@ -13,7 +13,6 @@ namespace TurboJpegWrapper
     {
         private IntPtr _decompressorHandle;
         private bool _isDisposed;
-        private readonly object _lock = new object();
 
         /// <summary>
         /// Creates new instance of <see cref="TJDecompressor"/>
@@ -79,9 +78,9 @@ namespace TurboJpegWrapper
             if (_isDisposed)
                 throw new ObjectDisposedException("this");
 
-            int subsampl;
+            TJSubsamplingOptions subsampl;
             int colorspace;
-            var funcResult = TurboJpegImport.tjDecompressHeader(_decompressorHandle, jpegBuf, jpegBufSize,
+            var funcResult = TurboJpegImport.DecompressHeader(_decompressorHandle, jpegBuf, jpegBufSize,
                 out width, out height, out subsampl, out colorspace);
 
             if (funcResult == -1)
@@ -90,7 +89,7 @@ namespace TurboJpegWrapper
             }
 
             var targetFormat = destPixelFormat;
-            stride = TurboJpegImport.TJPAD(width * TurboJpegImport.PixelSizes[targetFormat]);
+            stride = TurboJpegImport.TJPad(width * TurboJpegImport.PixelSizes[targetFormat]);
             var bufSize = stride * height;
 
             if (outBufSize < bufSize)
@@ -98,7 +97,7 @@ namespace TurboJpegWrapper
                 throw new ArgumentOutOfRangeException(nameof(outBufSize));
             }
 
-            funcResult = TurboJpegImport.tjDecompress(
+            funcResult = TurboJpegImport.Decompress(
                 _decompressorHandle,
                 jpegBuf,
                 jpegBufSize,
@@ -106,8 +105,8 @@ namespace TurboJpegWrapper
                 width,
                 stride,
                 height,
-                (int)targetFormat,
-                (int)flags);
+                targetFormat,
+                flags);
 
             if (funcResult == -1)
             {
@@ -220,16 +219,16 @@ namespace TurboJpegWrapper
         /// </param>
         public void GetImageInfo(IntPtr jpegBuf, ulong jpegBufSize, TJPixelFormats destPixelFormat, out int width, out int height, out int stride, out int bufSize)
         {
-            int subsampl;
+            TJSubsamplingOptions subsampl;
             int colorspace;
 
-            var funcResult = TurboJpegImport.tjDecompressHeader(_decompressorHandle, jpegBuf, jpegBufSize,
+            var funcResult = TurboJpegImport.DecompressHeader(_decompressorHandle, jpegBuf, jpegBufSize,
                 out width, out height, out subsampl, out colorspace);
             if (funcResult != 0)
             {
                 TJUtils.GetErrorAndThrow();
             }
-            stride = TurboJpegImport.TJPAD(width * TurboJpegImport.PixelSizes[destPixelFormat]);
+            stride = TurboJpegImport.TJPad(width * TurboJpegImport.PixelSizes[destPixelFormat]);
             bufSize = stride * height;
         }
 
@@ -250,7 +249,7 @@ namespace TurboJpegWrapper
         /// </returns>
         public int GetBufferSize(int height, int width, TJPixelFormats destPixelFormat)
         {
-            int stride = TurboJpegImport.TJPAD(width * TurboJpegImport.PixelSizes[destPixelFormat]);
+            int stride = TurboJpegImport.TJPad(width * TurboJpegImport.PixelSizes[destPixelFormat]);
             return stride * height;
         }
 

@@ -14,7 +14,6 @@ namespace TurboJpegWrapper
     {
         private IntPtr _compressorHandle;
         private bool _isDisposed;
-        private readonly object _lock = new object();
 
         /// <summary>
         /// Creates new instance of <see cref="TJCompressor"/>
@@ -48,7 +47,7 @@ namespace TurboJpegWrapper
         /// <exception cref="NotSupportedException">
         /// Some parameters' values are incompatible:
         /// <list type="bullet">
-        /// <item><description>Subsampling not equals to <see cref="TJSubsamplingOptions.TJSAMP_GRAY"/> and pixel format <see cref="TJPixelFormats.TJPF_GRAY"/></description></item>
+        /// <item><description>Subsampling not equals to <see cref="TJSubsamplingOptions.Gray"/> and pixel format <see cref="TJPixelFormats.Gray"/></description></item>
         /// </list>
         /// </exception>
         public byte[] Compress(Bitmap srcImage, TJSubsamplingOptions subSamp, int quality, TJFlags flags)
@@ -89,7 +88,7 @@ namespace TurboJpegWrapper
         /// <param name="stride">
         /// Bytes per line in the source image.  
         /// Normally, this should be <c>width * BytesPerPixel</c> if the image is unpadded, 
-        /// or <c>TJPAD(width * BytesPerPixel</c> if each line of the image
+        /// or <c>TJPad(width * BytesPerPixel</c> if each line of the image
         /// is padded to the nearest 32-bit boundary, as is the case for Windows bitmaps.  
         /// You can also be clever and use this parameter to skip lines, etc.
         /// Setting this parameter to 0 is the equivalent of setting it to
@@ -109,7 +108,7 @@ namespace TurboJpegWrapper
         /// <exception cref="NotSupportedException">
         /// Some parameters' values are incompatible:
         /// <list type="bullet">
-        /// <item><description>Subsampling not equals to <see cref="TJSubsamplingOptions.TJSAMP_GRAY"/> and pixel format <see cref="TJPixelFormats.TJPF_GRAY"/></description></item>
+        /// <item><description>Subsampling not equals to <see cref="TJSubsamplingOptions.Gray"/> and pixel format <see cref="TJPixelFormats.Gray"/></description></item>
         /// </list>
         /// </exception>
         public byte[] Compress(IntPtr srcPtr, int stride, int width, int height, PixelFormat pixelFormat, TJSubsamplingOptions subSamp, int quality, TJFlags flags)
@@ -130,12 +129,12 @@ namespace TurboJpegWrapper
                     width,
                     stride,
                     height,
-                    (int)tjPixelFormat,
+                    tjPixelFormat,
                     ref buf,
                     ref bufSize,
-                    (int)subSamp,
+                    subSamp,
                     quality,
-                    (int)flags);
+                    flags);
 
                 if (result == -1)
                 {
@@ -163,7 +162,7 @@ namespace TurboJpegWrapper
         /// <param name="stride">
         /// Bytes per line in the source image.  
         /// Normally, this should be <c>width * BytesPerPixel</c> if the image is unpadded, 
-        /// or <c>TJPAD(width * BytesPerPixel</c> if each line of the image
+        /// or <c>TJPad(width * BytesPerPixel</c> if each line of the image
         /// is padded to the nearest 32-bit boundary, as is the case for Windows bitmaps.  
         /// You can also be clever and use this parameter to skip lines, etc.
         /// Setting this parameter to 0 is the equivalent of setting it to
@@ -185,7 +184,7 @@ namespace TurboJpegWrapper
         /// <exception cref="NotSupportedException"> 
         /// Some parameters' values are incompatible:
         /// <list type="bullet">
-        /// <item><description>Subsampling not equals to <see cref="TJSubsamplingOptions.TJSAMP_GRAY"/> and pixel format <see cref="TJPixelFormats.TJPF_GRAY"/></description></item>
+        /// <item><description>Subsampling not equals to <see cref="TJSubsamplingOptions.Gray"/> and pixel format <see cref="TJPixelFormats.Gray"/></description></item>
         /// </list>
         /// </exception>
         public unsafe byte[] Compress(byte[] srcBuf, int stride, int width, int height, PixelFormat pixelFormat, TJSubsamplingOptions subSamp, int quality, TJFlags flags)
@@ -208,12 +207,12 @@ namespace TurboJpegWrapper
                         width,
                         stride,
                         height,
-                        (int)tjPixelFormat,
+                        tjPixelFormat,
                         ref buf,
                         ref bufSize,
-                        (int)subSamp,
+                        subSamp,
                         quality,
-                        (int)flags);
+                        flags);
                     if (result == -1)
                     {
                         TJUtils.GetErrorAndThrow();
@@ -274,15 +273,15 @@ namespace TurboJpegWrapper
         /// <exception cref="NotSupportedException"> 
         /// Some parameters' values are incompatible:
         /// <list type="bullet">
-        /// <item><description>Subsampling not equals to <see cref="TJSubsamplingOptions.TJSAMP_GRAY"/> and pixel format <see cref="TJPixelFormats.TJPF_GRAY"/></description></item>
+        /// <item><description>Subsampling not equals to <see cref="TJSubsamplingOptions.Gray"/> and pixel format <see cref="TJPixelFormats.Gray"/></description></item>
         /// </list>
         /// </exception>
         [SuppressMessage("ReSharper", "UnusedParameter.Local")]
         private static void CheckOptionsCompatibilityAndThrow(TJSubsamplingOptions subSamp, TJPixelFormats srcFormat)
         {
-            if (srcFormat == TJPixelFormats.TJPF_GRAY && subSamp != TJSubsamplingOptions.TJSAMP_GRAY)
+            if (srcFormat == TJPixelFormats.Gray && subSamp != TJSubsamplingOptions.Gray)
                 throw new NotSupportedException(
-                    $"Subsampling differ from {TJSubsamplingOptions.TJSAMP_GRAY} for pixel format {TJPixelFormats.TJPF_GRAY} is not supported");
+                    $"Subsampling differ from {TJSubsamplingOptions.Gray} for pixel format {TJPixelFormats.Gray} is not supported");
         }
     }
 
