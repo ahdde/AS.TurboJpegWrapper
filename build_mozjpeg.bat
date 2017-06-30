@@ -1,7 +1,9 @@
 cd mozjpeg
 git reset --hard
+git clean -f -d
 cd ..
 git apply turbojpeg.patch
+git apply jcparam.patch
 
 mkdir mozjpeg\bin\win32
 mkdir mozjpeg\bin\win64

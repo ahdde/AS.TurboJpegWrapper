@@ -1,0 +1,13 @@
+diff --git "a/mozjpeg/jcparam.c" "b/mozjpeg/jcparam.c"
+index c1b1777..e04d25e 100644
+--- "a/mozjpeg/jcparam.c"
++++ "b/mozjpeg/jcparam.c"
+@@ -487,7 +487,7 @@ jpeg_set_defaults (j_compress_ptr cinfo)
+ 
+   jpeg_default_colorspace(cinfo);
+   
+-  cinfo->master->dc_scan_opt_mode = 1;
++  cinfo->master->dc_scan_opt_mode = 0;
+   
+ #ifdef C_PROGRESSIVE_SUPPORTED
+   if (cinfo->master->compress_profile == JCP_MAX_COMPRESSION) {
